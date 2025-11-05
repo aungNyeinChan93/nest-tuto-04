@@ -7,6 +7,9 @@ import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostsModule } from './posts/posts.module';
+import { AuthorsModule } from './authors/authors.module';
+import { Post } from './posts/entities/post.entity';
+import { Author } from './authors/entities/author.entity';
 
 @Module({
   imports: [
@@ -20,9 +23,11 @@ import { PostsModule } from './posts/posts.module';
       autoLoadEntities: true,
       synchronize: true, // ❗ set false in production
       ssl: {
-        rejectUnauthorized: false, // Needed for Neon
+        rejectUnauthorized: true, // Needed for Neon
       },
+      entities: [Post, Author]
     }),
+    AuthorsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
