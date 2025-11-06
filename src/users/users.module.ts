@@ -1,12 +1,12 @@
-/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
-import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
-import { PrismaModule } from 'src/prisma/prisma.module';
+import { UsersController } from './users.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from './entities/user.entity';
 
 @Module({
   controllers: [UsersController],
   providers: [UsersService],
-  imports: [PrismaModule]
+  imports: [TypeOrmModule.forFeature([User])],
 })
-export class UsersModule { }
+export class UsersModule {}

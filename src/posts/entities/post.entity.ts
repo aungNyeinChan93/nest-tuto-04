@@ -1,22 +1,29 @@
 /* eslint-disable prettier/prettier */
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class Post {
-    @PrimaryGeneratedColumn()
-    id?: number;
+  @PrimaryGeneratedColumn()
+  id?: number;
 
-    @Column({ length: 100 })
-    title: string;
+  @Column({ length: 100 })
+  title: string;
 
-    @Column()
-    body: string;
+  @Column()
+  body: string;
 
-    @CreateDateColumn()
-    created_at: Date;
+  @Column({ length: 20 })
+  author_name: string;
 
-    @UpdateDateColumn()
-    updated_at?: Date;
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at?: Date;
 }
-

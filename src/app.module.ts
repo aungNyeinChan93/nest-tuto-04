@@ -2,18 +2,19 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersModule } from './users/users.module';
-import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostsModule } from './posts/posts.module';
 import { AuthorsModule } from './authors/authors.module';
 import { Post } from './posts/entities/post.entity';
 import { Author } from './authors/entities/author.entity';
+import { UsersModule } from './users/users.module';
+import { User } from './users/entities/user.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
-    UsersModule, PrismaModule, PostsModule,
+    PostsModule,
     ConfigModule.forRoot({
       envFilePath: ['.env'],
     }),
@@ -25,11 +26,13 @@ import { Author } from './authors/entities/author.entity';
       ssl: {
         rejectUnauthorized: true, // Needed for Neon
       },
-      entities: [Post, Author]
+      entities: [Post, Author, User],
     }),
     AuthorsModule,
+    UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}
