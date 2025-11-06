@@ -18,7 +18,7 @@ export enum UserRole {
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Column({ length: 20 })
   name: string;
@@ -26,7 +26,7 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Column({ length: 20 })
+  @Column({ nullable: false })
   password: string;
 
   @Column({

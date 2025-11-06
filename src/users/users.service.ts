@@ -1,14 +1,14 @@
 /* eslint-disable prettier/prettier */
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
+import { User, UserRole } from './entities/user.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectRepository(User) private UserRepo: Repository<User>) {}
+  constructor(@InjectRepository(User) private UserRepo: Repository<User>) { }
 
   async create(createUserDto: CreateUserDto) {
     const user = this.UserRepo.create({
@@ -22,8 +22,11 @@ export class UsersService {
     return this.UserRepo.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number) {
+    const users = await this.UserRepo.find();
+    const user = users?.find(u => u.id == id);
+    if (!user) throw new NotFoundException('user is not found!')
+    return user
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
@@ -32,5 +35,11 @@ export class UsersService {
 
   remove(id: number) {
     return `This action removes a #${id} user`;
+  }
+
+  async changeRole(id: number, role: UserRole) {
+    const result = await this.UserRepo.update(id, { role });
+    if (result.affected === 0) throw new NotFoundException('user not found!');
+    return await this.findOne(id);
   }
 }
