@@ -8,6 +8,8 @@ import {
   Param,
   Delete,
   ParseIntPipe,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -49,5 +51,11 @@ export class UsersController {
     @Body('role') role: UserRole,
   ) {
     return this.usersService.changeRole(id, role);
+  }
+
+  @Post('admin')
+  @HttpCode(HttpStatus.CREATED)
+  async createAdmin(@Body() createUserDto: CreateUserDto) {
+    return this.usersService.adminCreate(createUserDto)
   }
 }
